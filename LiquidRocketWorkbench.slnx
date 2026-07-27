@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LiquidRocketWorkbench.App/LiquidRocketWorkbench.App.csproj" />
+    <Project Path="src/LiquidRocketWorkbench.Core/LiquidRocketWorkbench.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LiquidRocketWorkbench.App.Tests/LiquidRocketWorkbench.App.Tests.csproj" />
+    <Project Path="tests/LiquidRocketWorkbench.Core.Tests/LiquidRocketWorkbench.Core.Tests.csproj" />
+  </Folder>
+</Solution>

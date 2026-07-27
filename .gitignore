@@ -1,0 +1,35 @@
+# Visual Studio user state and caches
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.csproj.user
+
+# .NET build output
+[Bb]in/
+[Oo]bj/
+[Aa]rtifacts/
+publish/
+
+# Test and coverage output
+[Tt]est[Rr]esults/
+coverage/
+*.coverage
+*.coveragexml
+
+# NuGet packages and locally produced packages
+packages/
+*.nupkg
+*.snupkg
+
+# IDE and analysis caches
+.idea/
+_ReSharper*/
+*.DotSettings.user
+BenchmarkDotNet.Artifacts/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini

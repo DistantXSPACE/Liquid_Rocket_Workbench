@@ -1,0 +1,495 @@
+<Window x:Class="LiquidRocketWorkbench.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:LiquidRocketWorkbench.App.Views"
+        mc:Ignorable="d"
+        Title="{Binding ApplicationTitle}"
+        Width="1280"
+        Height="800"
+        MinWidth="1040"
+        MinHeight="680"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource PageBackgroundBrush}"
+        FontFamily="Segoe UI"
+        TextOptions.TextFormattingMode="Display"
+        SnapsToDevicePixels="True">
+  <Window.InputBindings>
+    <KeyBinding Key="C"
+                Modifiers="Alt"
+                Command="{Binding CalculateCommand}" />
+    <KeyBinding Key="S"
+                Modifiers="Alt"
+                Command="{Binding SaveCurrentOperatingPointCommand}" />
+    <KeyBinding Key="L"
+                Modifiers="Alt"
+                Command="{Binding ClearOperatingPointComparisonsCommand}" />
+  </Window.InputBindings>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="84" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="34" />
+    </Grid.RowDefinitions>
+
+    <Border Grid.Row="0"
+            Background="{StaticResource HeaderBackgroundBrush}"
+            Padding="30,0">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Border Width="44"
+                Height="44"
+                VerticalAlignment="Center"
+                Background="{StaticResource AccentBrush}"
+                CornerRadius="10">
+          <TextBlock HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="23"
+                     FontWeight="Bold"
+                     Foreground="White"
+                     Text="Δ" />
+        </Border>
+
+        <StackPanel Grid.Column="1"
+                    Margin="16,0,0,0"
+                    VerticalAlignment="Center">
+          <TextBlock FontSize="23"
+                     FontWeight="SemiBold"
+                     Foreground="White"
+                     Text="{Binding ApplicationTitle}" />
+          <TextBlock Margin="0,3,0,0"
+                     FontSize="13"
+                     Foreground="#B9C6D8"
+                     Text="{Binding ApplicationSubtitle}" />
+        </StackPanel>
+
+        <Border Grid.Column="2"
+                VerticalAlignment="Center"
+                Padding="12,7"
+                Background="#203957"
+                CornerRadius="14">
+          <TextBlock FontSize="12"
+                     FontWeight="SemiBold"
+                     Foreground="#DCE6F2"
+                     Text="{Binding ModelBadgeText}" />
+        </Border>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="300" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <Border Grid.Column="0"
+              Background="{StaticResource SidebarBackgroundBrush}"
+              BorderBrush="{StaticResource BorderBrush}"
+              BorderThickness="0,0,1,0"
+              Padding="24,28">
+        <DockPanel>
+          <Border DockPanel.Dock="Bottom"
+                  Margin="0,18,0,0"
+                  Padding="14"
+                  AutomationProperties.Name="Model boundary summary"
+                  Background="#DDE6F0"
+                  CornerRadius="9">
+            <StackPanel>
+              <TextBlock FontSize="12"
+                         FontWeight="SemiBold"
+                         Foreground="{StaticResource PrimaryTextBrush}"
+                         Text="Model boundary" />
+              <TextBlock Margin="0,5,0,0"
+                         FontSize="12"
+                         Foreground="{StaticResource SecondaryTextBrush}"
+                         Text="{Binding CompactModelSummary}"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+          </Border>
+
+          <ScrollViewer AutomationProperties.Name="Workflow navigation"
+                        HorizontalScrollBarVisibility="Disabled"
+                        VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+            <TextBlock FontSize="12"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource MutedTextBrush}"
+                       Text="WORKFLOW" />
+            <ItemsControl Margin="0,14,0,0"
+                          ItemsSource="{Binding WorkflowSteps}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Margin="0,0,0,10"
+                          Padding="12"
+                          BorderBrush="Transparent"
+                          BorderThickness="1"
+                          CornerRadius="9">
+                    <Border.Style>
+                      <Style TargetType="Border">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                            <Setter Property="Background"
+                                    Value="{StaticResource AccentSoftBrush}" />
+                            <Setter Property="BorderBrush"
+                                    Value="#F0B59E" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Border.Style>
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="36" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+                      <Border Width="28"
+                              Height="28"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Background="{StaticResource PanelBackgroundBrush}"
+                              BorderBrush="{StaticResource BorderBrush}"
+                              BorderThickness="1"
+                              CornerRadius="14">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource AccentBrush}"
+                                   Text="{Binding StepNumber}" />
+                      </Border>
+                      <StackPanel Grid.Column="1">
+                        <TextBlock FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource PrimaryTextBrush}"
+                                   Text="{Binding Title}" />
+                        <TextBlock Margin="0,3,0,0"
+                                   FontSize="12"
+                                   Foreground="{StaticResource SecondaryTextBrush}"
+                                   Text="{Binding Description}"
+                                   TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </Border>
+
+      <ScrollViewer Grid.Column="1"
+                    AutomationProperties.Name="Calculation workspace"
+                    Padding="34,30"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="1040">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+              <TextBlock FontSize="29"
+                         FontWeight="SemiBold"
+                         Foreground="{StaticResource PrimaryTextBrush}"
+                         Text="Calculation workspace" />
+              <TextBlock MaxWidth="690"
+                         Margin="0,8,0,0"
+                         HorizontalAlignment="Left"
+                         Style="{StaticResource SecondaryTextStyle}"
+                         Text="{Binding WorkspaceIntroduction}" />
+            </StackPanel>
+
+            <Border Grid.Column="1"
+                    Margin="22,3,0,0"
+                    Padding="12,8"
+                    VerticalAlignment="Top"
+                    Background="{StaticResource SuccessSoftBrush}"
+                    CornerRadius="16">
+              <StackPanel Orientation="Horizontal">
+                <Ellipse Width="8"
+                         Height="8"
+                         Margin="0,0,8,0"
+                         VerticalAlignment="Center"
+                         Fill="{StaticResource SuccessBrush}" />
+                <TextBlock FontSize="12"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource SuccessBrush}"
+                           Text="{Binding CalculationServiceStatus}" />
+              </StackPanel>
+            </Border>
+          </Grid>
+
+          <Grid Margin="0,28,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="18" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <views:EngineInputView Grid.ColumnSpan="3"
+                                   DataContext="{Binding Inputs}"
+                                   IsEnabled="{Binding CanEditInputs}" />
+
+            <Border Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    Margin="0,18,0,0"
+                    Style="{StaticResource CardBorderStyle}">
+              <StackPanel>
+                <TextBlock Style="{StaticResource SectionTitleTextStyle}"
+                           Text="Performance summary" />
+                <TextBlock Margin="0,8,0,18"
+                           Style="{StaticResource SecondaryTextStyle}"
+                           Text="Headline values come directly from the deterministic Core result. Full engineering values and warnings appear below." />
+
+                <Border Padding="16"
+                        Background="#F6F8FB"
+                        CornerRadius="8"
+                        Visibility="{Binding IsEmptyState, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <StackPanel>
+                    <TextBlock AutomationProperties.Name="Empty calculation state"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryTextBrush}"
+                               Text="{Binding EmptyStateTitle}" />
+                    <TextBlock Margin="0,6,0,0"
+                               Style="{StaticResource SecondaryTextStyle}"
+                               Text="{Binding EmptyStateMessage}" />
+                  </StackPanel>
+                </Border>
+
+                <Border Padding="16"
+                        Background="{StaticResource AccentSoftBrush}"
+                        BorderBrush="#F0B59E"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Visibility="{Binding IsLoadingState, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="36" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ProgressBar Width="24"
+                                 Height="24"
+                                 AutomationProperties.Name="Calculation in progress"
+                                 IsIndeterminate="True" />
+                    <StackPanel Grid.Column="1">
+                      <TextBlock AutomationProperties.Name="Loading calculation state"
+                                 FontWeight="SemiBold"
+                                 Foreground="{StaticResource AccentBrush}"
+                                 Text="{Binding LoadingStateTitle}" />
+                      <TextBlock Margin="0,6,0,0"
+                                 Foreground="{StaticResource SecondaryTextBrush}"
+                                 Text="{Binding LoadingStateMessage}"
+                                 TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+
+                <Border Padding="16"
+                        Background="#FDECEC"
+                        BorderBrush="#E6B5B5"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Visibility="{Binding HasCalculationError, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <StackPanel>
+                    <TextBlock AutomationProperties.Name="Error calculation state"
+                               FontWeight="SemiBold"
+                               Foreground="#A92E2E"
+                               Text="Calculation could not be completed" />
+                    <TextBlock Margin="0,6,0,0"
+                               Foreground="#8B3434"
+                               Text="{Binding CalculationErrorMessage}"
+                               TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+
+                <Grid Visibility="{Binding IsSuccessState, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Border Padding="14"
+                          Background="#F6F8FB"
+                          CornerRadius="8">
+                    <StackPanel>
+                      <TextBlock AutomationProperties.Name="Successful calculation state"
+                                 FontSize="12"
+                                 Foreground="{StaticResource MutedTextBrush}"
+                                 Text="SELECTED-AMBIENT THRUST" />
+                      <TextBlock Margin="0,7,0,0"
+                                 FontSize="22"
+                                 FontWeight="SemiBold"
+                                 Foreground="{StaticResource PrimaryTextBrush}"
+                                 Text="{Binding HeadlineResult.SelectedThrustKilonewtons, StringFormat={}{0:N2} kN}" />
+                    </StackPanel>
+                  </Border>
+                  <Border Grid.Column="2"
+                          Padding="14"
+                          Background="#F6F8FB"
+                          CornerRadius="8">
+                    <StackPanel>
+                      <TextBlock FontSize="12"
+                                 Foreground="{StaticResource MutedTextBrush}"
+                                 Text="SELECTED-AMBIENT ISP" />
+                      <TextBlock Margin="0,7,0,0"
+                                 FontSize="22"
+                                 FontWeight="SemiBold"
+                                 Foreground="{StaticResource PrimaryTextBrush}"
+                                 Text="{Binding HeadlineResult.SelectedSpecificImpulseSeconds, StringFormat={}{0:N1} s}" />
+                    </StackPanel>
+                  </Border>
+                </Grid>
+
+                <Grid Margin="0,12,0,0"
+                      Visibility="{Binding IsSuccessState, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Border Padding="14"
+                          Background="{StaticResource AccentSoftBrush}"
+                          CornerRadius="8">
+                    <StackPanel>
+                      <TextBlock FontSize="12"
+                                 FontWeight="SemiBold"
+                                 Foreground="{StaticResource AccentBrush}"
+                                 Text="VACUUM" />
+                      <TextBlock Margin="0,6,0,0"
+                                 FontWeight="SemiBold"
+                                 Foreground="{StaticResource PrimaryTextBrush}"
+                                 Text="{Binding HeadlineResult.VacuumThrustKilonewtons, StringFormat={}{0:N2} kN}" />
+                      <TextBlock Margin="0,3,0,0"
+                                 Foreground="{StaticResource SecondaryTextBrush}"
+                                 Text="{Binding HeadlineResult.VacuumSpecificImpulseSeconds, StringFormat={}{0:N1} s Isp}" />
+                    </StackPanel>
+                  </Border>
+                  <Border Grid.Column="2"
+                          Padding="14"
+                          Background="#EDF1F6"
+                          CornerRadius="8">
+                    <StackPanel>
+                      <TextBlock FontSize="12"
+                                 FontWeight="SemiBold"
+                                 Foreground="{StaticResource SecondaryTextBrush}"
+                                 Text="SEA LEVEL" />
+                      <TextBlock Margin="0,6,0,0"
+                                 FontWeight="SemiBold"
+                                 Foreground="{StaticResource PrimaryTextBrush}"
+                                 Text="{Binding HeadlineResult.SeaLevelThrustKilonewtons, StringFormat={}{0:N2} kN}" />
+                      <TextBlock Margin="0,3,0,0"
+                                 Foreground="{StaticResource SecondaryTextBrush}"
+                                 Text="{Binding HeadlineResult.SeaLevelSpecificImpulseSeconds, StringFormat={}{0:N1} s Isp}" />
+                    </StackPanel>
+                  </Border>
+                </Grid>
+
+                <Border Margin="0,12,0,0"
+                        Padding="14"
+                        Background="#F6F8FB"
+                        CornerRadius="8"
+                        Visibility="{Binding IsSuccessState, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <WrapPanel>
+                    <TextBlock FontWeight="SemiBold"
+                               Foreground="{StaticResource PrimaryTextBrush}"
+                               Text="{Binding HeadlineResult.PropellantLabel}" />
+                    <TextBlock Margin="16,0,0,0"
+                               Foreground="{StaticResource SecondaryTextBrush}"
+                               Text="{Binding HeadlineResult.SelectedAmbientPressureKilopascals, StringFormat=Ambient: {0:N3} kPa}" />
+                    <TextBlock Margin="16,0,0,0"
+                               Foreground="{StaticResource SecondaryTextBrush}"
+                               Text="{Binding HeadlineResult.CalculatedMassFlowRateKilogramsPerSecond, StringFormat=Ideal flow: {0:N3} kg/s}" />
+                    <TextBlock Margin="16,0,0,0"
+                               Foreground="{StaticResource SecondaryTextBrush}"
+                               Text="{Binding HeadlineResult.NozzleExpansionStateLabel, StringFormat=Nozzle: {0}}" />
+                  </WrapPanel>
+                </Border>
+              </StackPanel>
+            </Border>
+          </Grid>
+
+          <views:NozzleStationDiagramView Margin="0,18,0,0"
+                                          DataContext="{Binding NozzleDiagram}" />
+
+          <views:OperatingPointComparisonView Margin="0,18,0,0" />
+
+          <Grid Margin="0,18,0,0"
+                Visibility="{Binding IsSuccessState, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <views:NozzleFlowProfilesView DataContext="{Binding NozzleProfiles}" />
+          </Grid>
+
+          <Grid Margin="0,18,0,0"
+                Visibility="{Binding IsSuccessState, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <views:ThrustAltitudeView DataContext="{Binding ThrustAltitudePlot}" />
+          </Grid>
+
+          <Grid Margin="0,18,0,0"
+                Visibility="{Binding IsSuccessState, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <views:DetailedResultsView DataContext="{Binding DetailedResult}" />
+          </Grid>
+
+          <Border Margin="0,18,0,0"
+                  Style="{StaticResource CardBorderStyle}">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="44" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Border Width="34"
+                      Height="34"
+                      VerticalAlignment="Top"
+                      Background="{StaticResource AccentSoftBrush}"
+                      CornerRadius="17">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="17"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource AccentBrush}"
+                           Text="i" />
+              </Border>
+              <StackPanel Grid.Column="1">
+                <TextBlock Style="{StaticResource SectionTitleTextStyle}"
+                           Text="Engineering assumptions stay visible" />
+                <TextBlock Margin="0,7,0,0"
+                           Style="{StaticResource SecondaryTextStyle}"
+                           Text="{Binding FullModelSummary}" />
+              </StackPanel>
+            </Grid>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+    </Grid>
+
+    <Border Grid.Row="2"
+            Background="{StaticResource PanelBackgroundBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="0,1,0,0"
+            Padding="18,0">
+      <Grid>
+        <TextBlock VerticalAlignment="Center"
+                   AutomationProperties.LiveSetting="Polite"
+                   AutomationProperties.Name="Application status"
+                   FontSize="12"
+                   Foreground="{StaticResource SecondaryTextBrush}"
+                   Text="{Binding StatusText}" />
+        <TextBlock HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   FontSize="12"
+                   Foreground="{StaticResource MutedTextBrush}"
+                   Text="{Binding VersionLabel}" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

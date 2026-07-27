@@ -1,0 +1,332 @@
+<UserControl x:Class="LiquidRocketWorkbench.App.Views.EngineInputView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="720"
+             d:DesignWidth="960">
+  <Border Style="{StaticResource CardBorderStyle}">
+    <StackPanel>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+          <TextBlock Style="{StaticResource SectionTitleTextStyle}"
+                     Text="Operating point" />
+          <TextBlock Margin="0,7,0,0"
+                     Style="{StaticResource SecondaryTextStyle}"
+                     Text="Display values use convenient metric units and convert to base SI before entering the calculation core." />
+        </StackPanel>
+        <Border Grid.Column="1"
+                Margin="20,0,0,0"
+                Padding="11,7"
+                VerticalAlignment="Top"
+                CornerRadius="14">
+          <Border.Style>
+            <Style TargetType="Border">
+              <Setter Property="Background" Value="#FDECEC" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInputValid}" Value="True">
+                  <Setter Property="Background"
+                          Value="{StaticResource SuccessSoftBrush}" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Border.Style>
+          <TextBlock AutomationProperties.LiveSetting="Polite"
+                     AutomationProperties.Name="Input validation status"
+                     FontSize="12"
+                     FontWeight="SemiBold"
+                     Text="{Binding ValidationSummary}">
+            <TextBlock.Style>
+              <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="#A92E2E" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding IsInputValid}" Value="True">
+                    <Setter Property="Foreground"
+                            Value="{StaticResource SuccessBrush}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </Border>
+      </Grid>
+
+      <Grid Margin="0,24,0,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="26" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+          <TextBlock Margin="0,0,0,14"
+                     FontSize="12"
+                     FontWeight="Bold"
+                     Foreground="{StaticResource AccentBrush}"
+                     Text="CHAMBER AND GAS" />
+
+          <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Thermodynamic preset" />
+          <ComboBox AutomationProperties.HelpText="Applies editable constant-property gas values and a propellant label."
+                    AutomationProperties.Name="Thermodynamic preset"
+                    DisplayMemberPath="DisplayName"
+                    ItemsSource="{Binding Presets}"
+                    SelectedItem="{Binding SelectedPreset, Mode=TwoWay}"
+                    Style="{StaticResource InputComboBoxStyle}" />
+
+          <Border Margin="0,8,0,0"
+                  Padding="11"
+                  Background="#F6F8FB"
+                  BorderBrush="{StaticResource BorderBrush}"
+                  BorderThickness="1"
+                  CornerRadius="7">
+            <StackPanel>
+              <TextBlock FontSize="12"
+                         FontWeight="SemiBold"
+                         Foreground="{StaticResource PrimaryTextBrush}"
+                         Text="Preset basis" />
+              <TextBlock Margin="0,4,0,0"
+                         FontSize="12"
+                         Foreground="{StaticResource SecondaryTextBrush}"
+                         Text="{Binding PresetSourceSummary}"
+                         TextWrapping="Wrap" />
+              <TextBlock Margin="0,5,0,0"
+                         FontSize="12"
+                         Foreground="{StaticResource AccentBrush}"
+                         Text="Applied values remain editable; edits switch the selection to Custom."
+                         TextWrapping="Wrap" />
+            </StackPanel>
+          </Border>
+
+          <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                     Margin="0,16,0,5"
+                     Text="Propellant label" />
+          <TextBox AutomationProperties.HelpText="{Binding [PropellantLabel]}"
+                   AutomationProperties.Name="Propellant label"
+                   Style="{StaticResource InputTextBoxStyle}"
+                   Text="{Binding PropellantLabel, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [PropellantLabel]}" />
+
+          <TextBlock Margin="0,16,0,5"
+                     Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Chamber pressure" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox AutomationProperties.HelpText="{Binding [ChamberPressureMegapascals]}"
+                     AutomationProperties.Name="Chamber pressure in megapascals"
+                     Style="{StaticResource InputTextBoxStyle}"
+                     Text="{Binding ChamberPressureMegapascals, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource UnitBadgeTextStyle}"
+                       Text="MPa" />
+          </Grid>
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [ChamberPressureMegapascals]}" />
+
+          <TextBlock Margin="0,16,0,5"
+                     Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Chamber temperature" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox AutomationProperties.HelpText="{Binding [ChamberTemperatureKelvin]}"
+                     AutomationProperties.Name="Chamber temperature in kelvin"
+                     Style="{StaticResource InputTextBoxStyle}"
+                     Text="{Binding ChamberTemperatureKelvin, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource UnitBadgeTextStyle}"
+                       Text="K" />
+          </Grid>
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [ChamberTemperatureKelvin]}" />
+
+          <TextBlock Margin="0,16,0,5"
+                     Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Specific heat ratio" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox AutomationProperties.HelpText="{Binding [SpecificHeatRatio]}"
+                     AutomationProperties.Name="Specific heat ratio gamma"
+                     Style="{StaticResource InputTextBoxStyle}"
+                     Text="{Binding SpecificHeatRatio, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource UnitBadgeTextStyle}"
+                       Text="gamma" />
+          </Grid>
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [SpecificHeatRatio]}" />
+
+          <TextBlock Margin="0,16,0,5"
+                     Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Specific gas constant" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox AutomationProperties.HelpText="{Binding [SpecificGasConstantJoulesPerKilogramKelvin]}"
+                     AutomationProperties.Name="Specific gas constant in joules per kilogram kelvin"
+                     Style="{StaticResource InputTextBoxStyle}"
+                     Text="{Binding SpecificGasConstantJoulesPerKilogramKelvin, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource UnitBadgeTextStyle}"
+                       Text="J/(kg·K)" />
+          </Grid>
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [SpecificGasConstantJoulesPerKilogramKelvin]}" />
+
+          <TextBlock Margin="0,16,0,5"
+                     Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Mixture ratio (O/F)" />
+          <TextBox AutomationProperties.HelpText="{Binding [MixtureRatio]}"
+                   AutomationProperties.Name="Oxidizer to fuel mixture ratio"
+                   Style="{StaticResource InputTextBoxStyle}"
+                   Text="{Binding MixtureRatio, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [MixtureRatio]}" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+          <TextBlock Margin="0,0,0,14"
+                     FontSize="12"
+                     FontWeight="Bold"
+                     Foreground="{StaticResource AccentBrush}"
+                     Text="NOZZLE AND ENVIRONMENT" />
+
+          <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Throat diameter" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox AutomationProperties.HelpText="{Binding [ThroatDiameterMillimeters]}"
+                     AutomationProperties.Name="Nozzle throat diameter in millimeters"
+                     Style="{StaticResource InputTextBoxStyle}"
+                     Text="{Binding ThroatDiameterMillimeters, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource UnitBadgeTextStyle}"
+                       Text="mm" />
+          </Grid>
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [ThroatDiameterMillimeters]}" />
+
+          <TextBlock Margin="0,16,0,5"
+                     Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Exit diameter" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox AutomationProperties.HelpText="{Binding [ExitDiameterMillimeters]}"
+                     AutomationProperties.Name="Nozzle exit diameter in millimeters"
+                     Style="{StaticResource InputTextBoxStyle}"
+                     Text="{Binding ExitDiameterMillimeters, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource UnitBadgeTextStyle}"
+                       Text="mm" />
+          </Grid>
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [ExitDiameterMillimeters]}" />
+
+          <TextBlock Margin="0,16,0,5"
+                     Style="{StaticResource FieldLabelTextStyle}"
+                     Text="Ambient pressure" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox AutomationProperties.HelpText="{Binding [AmbientPressureKilopascals]}"
+                     AutomationProperties.Name="Ambient pressure in kilopascals"
+                     Style="{StaticResource InputTextBoxStyle}"
+                     Text="{Binding AmbientPressureKilopascals, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+            <TextBlock Grid.Column="1"
+                       Style="{StaticResource UnitBadgeTextStyle}"
+                       Text="kPa" />
+          </Grid>
+          <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                     Text="{Binding [AmbientPressureKilopascals]}" />
+
+          <Border Margin="0,22,0,0"
+                  Padding="16"
+                  Background="#F6F8FB"
+                  BorderBrush="{StaticResource BorderBrush}"
+                  BorderThickness="1"
+                  CornerRadius="9">
+            <StackPanel>
+              <TextBlock FontSize="13"
+                         FontWeight="SemiBold"
+                         Foreground="{StaticResource PrimaryTextBrush}"
+                         Text="Optional comparison" />
+              <TextBlock Margin="0,4,0,14"
+                         FontSize="12"
+                         Foreground="{StaticResource SecondaryTextBrush}"
+                         Text="These values do not replace geometry-driven ideal flow."
+                         TextWrapping="Wrap" />
+
+              <TextBlock Style="{StaticResource FieldLabelTextStyle}"
+                         Text="Target mass flow" />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox AutomationProperties.HelpText="{Binding [TargetMassFlowRateKilogramsPerSecond]}"
+                         AutomationProperties.Name="Optional target mass flow in kilograms per second"
+                         Style="{StaticResource InputTextBoxStyle}"
+                         Text="{Binding TargetMassFlowRateKilogramsPerSecond, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                <TextBlock Grid.Column="1"
+                           Style="{StaticResource UnitBadgeTextStyle}"
+                           Text="kg/s" />
+              </Grid>
+              <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                         Text="{Binding [TargetMassFlowRateKilogramsPerSecond]}" />
+
+              <TextBlock Margin="0,16,0,5"
+                         Style="{StaticResource FieldLabelTextStyle}"
+                         Text="Burn duration" />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox AutomationProperties.HelpText="{Binding [BurnDurationSeconds]}"
+                         AutomationProperties.Name="Optional burn duration in seconds"
+                         Style="{StaticResource InputTextBoxStyle}"
+                         Text="{Binding BurnDurationSeconds, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" />
+                <TextBlock Grid.Column="1"
+                           Style="{StaticResource UnitBadgeTextStyle}"
+                           Text="s" />
+              </Grid>
+              <TextBlock Style="{StaticResource FieldErrorTextStyle}"
+                         Text="{Binding [BurnDurationSeconds]}" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Grid>
+
+      <Button Margin="0,24,0,0"
+              AutomationProperties.AcceleratorKey="Alt+C"
+              AutomationProperties.Name="Calculate engine performance"
+              Command="{Binding DataContext.CalculateCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+              Content="{Binding DataContext.CalculateButtonText, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+              Style="{StaticResource PrimaryButtonStyle}" />
+    </StackPanel>
+  </Border>
+</UserControl>
