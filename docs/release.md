@@ -36,6 +36,7 @@ publish/
     docs/
       release.md
       references.md
+      user-guide.md
       screenshots/
         01-input-workflow.png
         02-performance-summary.png
@@ -65,6 +66,9 @@ Get-Content publish\LiquidRocketWorkbench-1.0.0-win-x64.zip.sha256
 
 The published folder is portable as a unit. Do not move only the executable away
 from its adjacent runtime files.
+
+For a complete walkthrough of the workflow and an explanation of every input and
+result group, open [user-guide.md](user-guide.md).
 
 ## Release screenshots
 

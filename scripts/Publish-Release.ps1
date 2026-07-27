@@ -59,6 +59,8 @@ Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\release.md") `
     -Destination (Join-Path $outputDirectory "docs")
 Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\references.md") `
     -Destination (Join-Path $outputDirectory "docs")
+Copy-Item -LiteralPath (Join-Path $repositoryRoot "docs\user-guide.md") `
+    -Destination (Join-Path $outputDirectory "docs")
 
 $screenshotSource = Join-Path $repositoryRoot "docs\screenshots"
 if (-not (Test-Path -LiteralPath $screenshotSource -PathType Container))

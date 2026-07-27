@@ -334,6 +334,11 @@ assumptions.
 - [x] `P4-02` Complete accessibility, layout, units, and numerical-format review.
 - [x] `P4-03` Publish a documented runnable build with screenshots and known limits.
 
+### Post-MVP maintenance
+
+- [x] `DOC-01` Add a task-oriented end-user guide and include it in future
+      release packages.
+
 ### Task evidence
 
 Add or update a row when a task becomes active or complete. Keep evidence short:
@@ -365,6 +370,7 @@ a test command, test name, screenshot path, or manual verification note.
 | P4-01 | Complete | Codex | Automated end-to-end tests exercise the production happy path and invalid-input recovery from editable display values through real WPF controls, bindings, the Core calculator, and rendered workflow state | Restore current; build: 0 warnings/errors; 340/340 tests passed, including 3 WPF happy-path, malformed-input, cross-field-validation, and recovery cases; changed C# formatting verified on 2026-07-26 |
 | P4-02 | Complete | Codex | The compiled workflow passes an accessibility, minimum-layout, metric-unit, culture-aware numerical-format, and text/essential-graphic contrast review with automated regression coverage | Restore current; build: 0 warnings/errors; 344/344 tests passed, including 4 new real-window accessibility, 1040×680 containment, German-culture/metric-unit, and WCAG AA theme cases; UI Automation found 11/11 named edit controls and a successful result at minimum size; `artifacts/p4-02/minimum-window-success.png` visually inspected; changed C# formatting verified on 2026-07-26 |
 | P4-03 | Complete | Codex | A reproducible documented Windows publish produces a runnable release artifact with durable workflow screenshots, explicit requirements, and known engineering limits | Release build: 0 warnings/errors; 344/344 tests passed; self-contained v1.0.0 ZIP contains 407 files, release guide, references, and 4 screenshots; SHA-256 `8980a7e9b5fbafff14c5cef81d7e26144c82a42de7a0792a4104a34d6e79add1`; fresh-extraction UI Automation calculated successfully and exited 0 on 2026-07-26 |
+| DOC-01 | Complete | Codex | A release user can follow one task-oriented guide from launch through input, calculation, interpretation, exploration, comparison, troubleshooting, and model limits | `docs/user-guide.md`: 2,460 words, 6 internal links verified; release packaging script parses cleanly and copies the guide; `git diff --check` passes; 344/344 tests pass on 2026-07-26 |
 
 ## 9. Current Work
 
@@ -412,6 +418,7 @@ Directory.Build.props                          Shared compilation and analysis s
 .gitignore                                     Visual Studio, .NET, test, and OS exclusions
 docs/references.md                             Equation traceability and fixed validation cases
 docs/release.md                                v1.0.0 requirements, usage, verification, and known limits
+docs/user-guide.md                             Task-oriented end-user workflow and result interpretation
 docs/screenshots/                              Durable workflow screenshots from the published app
 scripts/Publish-Release.ps1                    Reproducible self-contained Windows release packaging
 scripts/Capture-ReleaseScreenshots.ps1         Published-app UI smoke check and screenshot capture
@@ -779,6 +786,18 @@ with exit code 0.
   executable calculated successfully through UI Automation and exited 0.
 - Remaining: no tracked MVP work. Define and prioritize post-MVP tasks before
   expanding scope.
+
+### 2026-07-26 — DOC-01
+
+- Completed: added a screenshot-backed end-user guide covering launch, inputs,
+  calculation, result interpretation, profiles, altitude behavior, saved
+  comparisons, troubleshooting, keyboard access, and engineering limits.
+- Completed: linked the guide from the README and release notes and added it to
+  the reproducible release-package contents.
+- Verified: all six guide links resolve, the publish script parses without
+  errors, `git diff --check` passes, and all 344 tests pass.
+- Remaining: the existing v1.0.0 ZIP remains the previously verified artifact;
+  the guide will be included the next time `Publish-Release.ps1` is run.
 
 ### Handoff template
 

@@ -52,6 +52,10 @@ adjacent runtime files together.
 See [docs/release.md](docs/release.md) for archive verification, release
 screenshots, run instructions, and the complete known-limits statement.
 
+For a task-oriented walkthrough of every input, result, plot, warning, keyboard
+shortcut, and saved comparison, see the
+[Liquid Rocket Workbench User Guide](docs/user-guide.md).
+
 ## Current input workflow
 
 The operating-point form accepts convenient metric display units and validates
